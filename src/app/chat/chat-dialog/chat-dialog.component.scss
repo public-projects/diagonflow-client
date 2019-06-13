@@ -1,0 +1,43 @@
+.message {
+  border-radius: 50px;
+  margin: 0 15px 10px;
+  padding: 15px 20px;
+  position: relative;
+  font-weight: bold;
+  // height: 50px;
+}
+input, .message{
+  font-family: 'Patrick Hand', cursive;
+ box-sizing: content-box;
+}
+input{
+  margin-left: 5px;
+  border-radius: 25px;
+}
+input:focus{
+  background-color: #2cd25a;
+}
+.icon {
+  width: 2vw;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: -10px;
+
+}
+.message.to {
+  // background-color: #2095FE;
+  background-color: #19777d;
+  color: #fff;
+  text-align: right;
+}
+.message.from {
+  background-color: #E5E4E9;
+  color: #363636;
+  margin-right: 100px;
+  text-align: left;
+
+}
+.message.to + .message.to,
+.message.from + .message.from {
+margin-top: -10px;
+}

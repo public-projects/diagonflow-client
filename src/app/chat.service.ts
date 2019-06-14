@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 // import { ApiAiClient } from 'api-ai-javascript';
 import { ApiAiClient } from 'api-ai-javascript/es6/ApiAiClient';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 export class Message {
   constructor(public content: string, public sentBy: string) { }
@@ -22,10 +23,10 @@ export class ChatService {
 
   constructor(private httpClient: HttpClient) { }
 
-  converse(msg: string): Observable<any> {
+  converse(msg: string): void {
     const userMessage = new Message(msg, 'user');
-    this.update(userMessage);
-    const body = {
+    this.updateMessage(userMessage);
+    const questionRequestBody = {
       question: userMessage.content
       // question: 'how do you feel?'
     };
@@ -33,25 +34,80 @@ export class ChatService {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json'
+        'Content-Type': 'application/json'
       })
     }
-    this.httpClient.post('http://10.0.0.3:3000/chatbot/find', body, httpOptions).toPromise().then(
-      (res) => {
-        console.log('res =');
-        console.log(res);
-      }
-    );
-    return this.client.textRequest(msg)
-      .then(res => {
-        const speech = res.result.fulfillment.speech;
-        const botMessage = new Message(speech, 'bot');
-        this.update(botMessage);
-      });
+    console.log('before post client questionRequestBody =');
+    console.log(questionRequestBody);
+
+    this.httpClient.post('http://10.0.0.3:3000/chatbot/find', questionRequestBody, httpOptions)
+      // .pipe(
+      //   map(
+      //     (res) => {
+      //       console.log('res =');
+      //       console.log(res);
+      //       const botMessage = new Message(res['answer'], 'bot');
+      //       this.updateMessage(botMessage);
+      //       return res;
+      //     }
+      //   )
+      // )
+      .subscribe(
+        (cacheResult) => {
+          console.log('cacheResult service =');
+          console.log(cacheResult);
+          if (cacheResult && cacheResult['answer']) {
+            const botMessage = new Message(cacheResult['answer'], 'bot');
+            this.updateMessage(botMessage);
+          } else {
+            this.client.textRequest(msg)
+              .then(res => {
+                const speech = res.result.fulfillment.speech;
+                const botMessage = new Message(speech, 'bot');
+                console.log('caching body =');
+                console.log(questionRequestBody);
+
+                this.updateDBCache(questionRequestBody.question, speech);
+                this.updateMessage(botMessage);
+              });
+          }
+
+        }
+      );
+
+
+    // return this.client.textRequest(msg)
+    //   .then(res => {
+    //     const speech = res.result.fulfillment.speech;
+    //     const botMessage = new Message(speech, 'bot');
+    //     this.updateMessage(botMessage);
+    //   });
   }
 
-  update(msg: Message) {
+  updateMessage(msg: Message) {
     this.conversation.next([msg]);
   }
 
+  updateDBCache(question, answer) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    console.log('updateDBCache()');
+    console.log(question);
+    console.log(answer);
+    const updateDBCacheBody = {
+      question: question,
+      answer: answer
+    }
+    this.httpClient.post('http://10.0.0.3:3000/chatbot/update', updateDBCacheBody, httpOptions)
+      .subscribe(
+        (res) => {
+          console.log('updateDBCache() res =');
+          console.log(res);
+
+        }
+      );
+  }
 }

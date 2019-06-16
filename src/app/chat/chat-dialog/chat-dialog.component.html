@@ -1,22 +1,39 @@
+<div class="chat-dialog-container" fxLayout="column" fxLayoutAlign="start center">
+  <!-- <label for="nameField">What is on your mind?</label> -->
+<!--
+  <input
+    [(ngModel)]="formValue"
+    (keyup.enter)="sendMessage()"
+    type="text"
+  /><br />
 
-<h1>Angular Bot</h1>
+  <button (click)="sendMessage()">Send</button> -->
+  <h1 >Angular Bot</h1>
+  <div #chatbotContainer class="chatbot-container">
 
+    <div  *ngFor="let message of messages | async" class="message-container">
+      <div
+        class="message"
+        [ngClass]="{
+          from: message.sentBy === 'bot',
+          to: message.sentBy === 'user'
+        }"
+      >
+        <img class="icon" src="assets/bot-messenger.png" />
+        <span>{{ message.content }}</span>
+      </div>
+    </div>
+    <br />
+    <div style="width: 100%;overflow:auto;">
+        <input
+        id="input-message"
+        class="message to"
+        [(ngModel)]="formValue"
+        (keyup.enter)="sendMessage()"
+        type="text"
+        placeholder="What is on your mind?"
+      /><br />
+    </div>
 
-
-<ng-container *ngFor="let message of messages | async">
-
-  <div class="message" [ngClass]="{ 'from': message.sentBy === 'bot',
-                                    'to':   message.sentBy === 'user' }">
-  <img class="icon" src='assets/bot-messenger.png'> <span>{{ message.content }}</span>
   </div>
-
-</ng-container>
-
-
-<label for="nameField">What is on your mind?</label>
-
-
-<input [(ngModel)]="formValue" (keyup.enter)="sendMessage()" type="text"><br>
-
-<button (click)="sendMessage()">Send</button>
-
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, QueryList } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Message, ChatService } from 'src/app/chat.service';
 import { scan } from 'rxjs/operators';
@@ -8,7 +8,8 @@ import { scan } from 'rxjs/operators';
   styleUrls: ['./chat-dialog.component.scss']
 })
 export class ChatDialogComponent implements OnInit {
-
+  // @ViewChild('chatbotContainer',{static: false}) chatbotContainer;
+  @ViewChild('chatbotContainer',{static: false}) chatbotContainerRef: ElementRef;
 
   messages: Observable<Message[]>;
   formValue: string;
@@ -22,9 +23,16 @@ export class ChatDialogComponent implements OnInit {
     );
   }
 
+
+  ngAfterViewChecked() {
+    console.log('ngAfterViewChecked() this.chatbotContainerRef.nativeElement' );
+    console.log(this.chatbotContainerRef.nativeElement.scrollHeight);
+    console.log(this.chatbotContainerRef.nativeElement.scrollTop);
+    this.chatbotContainerRef.nativeElement.scrollTop = this.chatbotContainerRef.nativeElement.scrollHeight;
+  }
   sendMessage() {
     this.chat.converse(this.formValue);
     this.formValue = '';
   }
-
 }
+

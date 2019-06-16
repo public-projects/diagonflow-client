@@ -40,7 +40,8 @@ export class ChatService {
     console.log('before post client questionRequestBody =');
     console.log(questionRequestBody);
 
-    this.httpClient.post('http://10.0.0.3:3000/chatbot/find', questionRequestBody, httpOptions)
+    // this.httpClient.post('http://10.0.0.3:3000/chatbot/find', questionRequestBody, httpOptions)
+    this.httpClient.post('https://d1325b09.ngrok.io/chatbot/find', questionRequestBody, httpOptions)
       // .pipe(
       //   map(
       //     (res) => {

@@ -4,13 +4,15 @@ import { ChatDialogComponent } from './chat-dialog/chat-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../chat.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [ChatDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FlexLayoutModule
   ],
   exports: [ ChatDialogComponent ],
   providers: [ChatService]

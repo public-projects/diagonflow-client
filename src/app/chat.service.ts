@@ -37,11 +37,12 @@ export class ChatService {
         'Content-Type': 'application/json'
       })
     }
-    console.log('before post client questionRequestBody =');
+    console.log('before post client questionRequestBody after heroku=');
     console.log(questionRequestBody);
 
     // this.httpClient.post('http://10.0.0.3:3000/chatbot/find', questionRequestBody, httpOptions)
-    this.httpClient.post('https://d1325b09.ngrok.io/chatbot/find', questionRequestBody, httpOptions)
+    this.httpClient.post('https://radiant-citadel-40459.herokuapp.com/chatbot/find', questionRequestBody, httpOptions)
+    // this.httpClient.post('https://d1325b09.ngrok.io/chatbot/find', questionRequestBody, httpOptions)
       // .pipe(
       //   map(
       //     (res) => {
@@ -57,7 +58,8 @@ export class ChatService {
         (cacheResult) => {
           console.log('cacheResult service =');
           console.log(cacheResult);
-          if (cacheResult && cacheResult['answer']) {
+          if (false) {
+            // if (cacheResult && cacheResult['answer']) {
             const botMessage = new Message(cacheResult['answer'], 'bot');
             this.updateMessage(botMessage);
           } else {
@@ -67,8 +69,10 @@ export class ChatService {
                 const botMessage = new Message(speech, 'bot');
                 console.log('caching body =');
                 console.log(questionRequestBody);
+                console.log('res.result =');
+                console.log(res.result );
 
-                this.updateDBCache(questionRequestBody.question, speech);
+                // this.updateDBCache(questionRequestBody.question, speech);
                 this.updateMessage(botMessage);
               });
           }

@@ -1,17 +1,12 @@
-<div class="chat-dialog-container" fxLayout="column" fxLayoutAlign="start center">
-  <!-- <label for="nameField">What is on your mind?</label> -->
-<!--
-  <input
-    [(ngModel)]="formValue"
-    (keyup.enter)="sendMessage()"
-    type="text"
-  /><br />
-
-  <button (click)="sendMessage()">Send</button> -->
-  <h1 >Angular Bot</h1>
+<div
+  class="chat-dialog-container"
+  fxLayout="column"
+  fxLayoutAlign="start center"
+>
+  <h1>Angular Bot</h1>
   <div #chatbotContainer class="chatbot-container">
-
-    <div  *ngFor="let message of messages | async" class="message-container">
+    <!-- render messages in RT (async) -->
+    <div *ngFor="let message of messages | async" class="message-container">
       <div
         class="message"
         [ngClass]="{
@@ -19,13 +14,15 @@
           to: message.sentBy === 'user'
         }"
       >
+        <!-- message body -->
         <img class="icon" src="assets/bot-messenger.png" />
         <span>{{ message.content }}</span>
       </div>
     </div>
     <br />
+    <!-- message input -->
     <div style="width: 100%;overflow:auto;">
-        <input
+      <input
         id="input-message"
         class="message to"
         [(ngModel)]="formValue"
@@ -34,6 +31,5 @@
         placeholder="What is on your mind?"
       /><br />
     </div>
-
   </div>
 </div>

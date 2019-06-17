@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Message, ChatService } from 'src/app/chat.service';
+import {  ChatService } from 'src/app/chat.service';
 import { scan } from 'rxjs/operators';
+import { Message } from '../message/message';
 @Component({
   selector: 'app-chat-dialog',
   templateUrl: './chat-dialog.component.html',
   styleUrls: ['./chat-dialog.component.scss']
 })
 export class ChatDialogComponent implements OnInit {
-  // @ViewChild('chatbotContainer',{static: false}) chatbotContainer;
-  @ViewChild('chatbotContainer',{static: false}) chatbotContainerRef: ElementRef;
+  // used to apply scroll bottom (chat scroll)
+  @ViewChild('chatbotContainer', {static: false}) chatbotContainerRef: ElementRef;
 
   messages: Observable<Message[]>;
   formValue: string;
@@ -17,7 +18,7 @@ export class ChatDialogComponent implements OnInit {
   constructor(public chat: ChatService) { }
 
   ngOnInit() {
-    // appends to array after each new message is added to feedSource
+    // chatSrvice Message array update RT
     this.messages = this.chat.conversation.asObservable().pipe(
       scan((acc, val) => acc.concat(val) )
     );
@@ -25,11 +26,10 @@ export class ChatDialogComponent implements OnInit {
 
 
   ngAfterViewChecked() {
-    console.log('ngAfterViewChecked() this.chatbotContainerRef.nativeElement' );
-    console.log(this.chatbotContainerRef.nativeElement.scrollHeight);
-    console.log(this.chatbotContainerRef.nativeElement.scrollTop);
+    // apply chat style scroll bottom
     this.chatbotContainerRef.nativeElement.scrollTop = this.chatbotContainerRef.nativeElement.scrollHeight;
   }
+  // send the message to chat service to apply buisness logic and update DB
   sendMessage() {
     this.chat.converse(this.formValue);
     this.formValue = '';

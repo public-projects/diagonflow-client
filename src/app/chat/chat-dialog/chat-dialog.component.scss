@@ -9,7 +9,8 @@
     clear: right;
     overflow-y: auto;
     max-width: 1000px;
-    max-height: 79vh;
+    max-height: 69vh;
+    padding-right: 5px;
 }
 
 .message-container {
@@ -21,6 +22,7 @@ h1 {
     margin-bottom: 1vh;
     text-shadow: 1px 1px 2px white, 0 0 25px blue, 0 0 5px darkblue;
 }
+
 // messages
 .message {
     border-radius: 5vw;
@@ -28,6 +30,8 @@ h1 {
     position: relative;
     font-weight: bold;
     width: fit-content;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 
@@ -41,6 +45,9 @@ h1 {
 
 .message.from {
     background-color: #E5E4E9;
+    background-image: url('/assets/favicon-icon-b.png');
+    background-size: contain;
+    background-repeat: no-repeat;
     color: #363636;
     margin-right: 100px;
     text-align: left;
@@ -50,6 +57,7 @@ h1 {
 .message.from+.message.from {
     margin-top: -10px;
 }
+
 // input
 input,
 .message {
@@ -72,13 +80,79 @@ input:focus {
 
 #input-message {
     background-color: #49f054;
+    background-image: url('/assets/favicon-icon-b.png');
+    background-size: contain;
+    background-repeat: no-repeat;
     color: black;
     display: block;
+
+    &:focus {
+        outline: none;
+    }
 }
+
 // others
 .icon {
     width: 2vw;
     min-width: 20px;
     margin-left: 1vw;
     margin-right: 1vw;
+}
+
+
+.message {
+    animation-name: stretch;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-play-state: running;
+}
+
+// message animation
+@keyframes stretch {
+    0% {
+        transform: scale(.1);
+        // background-color: red;
+        border-radius: 100%;
+        filter: alpha(opacity=50);
+    }
+
+    50% {
+        // background-color: orange;
+        opacity: 0.5;
+
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// scroll bar style
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #dedede;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: blue;
+    // background-image: linear-gradient(blue,rgb(79, 79, 226));
+    // background-image:radial-gradient(circle,blue,rgb(79, 79, 226)n);
+    background-image: linear-gradient(to left, blue, rgb(79, 79, 226));
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #33ccaa;
 }

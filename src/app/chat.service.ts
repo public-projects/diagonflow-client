@@ -31,7 +31,7 @@ export class ChatService {
       })
     };
     // check question's history (https call to DB)
-    this.httpClient.post('https://radiant-citadel-40459.herokuapp.com/chatbot/find', questionRequestBody, httpOptions)
+    this.httpClient.post(environment.url + 'chatbot/find', questionRequestBody, httpOptions)
       .subscribe(
         (cacheResult: Question) => {
           if (cacheResult && cacheResult.answer) {
@@ -68,10 +68,10 @@ export class ChatService {
       question: question,
       answer: answer
     };
-    this.httpClient.post('https://radiant-citadel-40459.herokuapp.com/chatbot/update', updateDBCacheBody, httpOptions)
+    this.httpClient.post(environment.url + 'chatbot/update', updateDBCacheBody, httpOptions)
       .subscribe(
         (res) => {
-          console.log(res);
+          // console.log(res);
         }, error => console.log(error)
       );
   }

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  url: 'http://10.0.0.3:3000/',
   dialogflow: {
     angularBot: '67cec4adc65841cdb24b4df2c86ca9ca'
   }

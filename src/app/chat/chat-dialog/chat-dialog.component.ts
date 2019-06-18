@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import {  ChatService } from 'src/app/chat.service';
+import { ChatService } from 'src/app/chat.service';
 import { scan } from 'rxjs/operators';
 import { Message } from '../message/message';
 @Component({
@@ -10,8 +10,7 @@ import { Message } from '../message/message';
 })
 export class ChatDialogComponent implements OnInit {
   // used to apply scroll bottom (chat scroll)
-  @ViewChild('chatbotContainer', {static: false}) chatbotContainerRef: ElementRef;
-
+  @ViewChild('chatbotContainer', { static: false }) chatbotContainerRef: ElementRef;
   messages: Observable<Message[]>;
   formValue: string;
 
@@ -20,7 +19,7 @@ export class ChatDialogComponent implements OnInit {
   ngOnInit() {
     // chatSrvice Message array update RT
     this.messages = this.chat.conversation.asObservable().pipe(
-      scan((acc, val) => acc.concat(val) )
+      scan((acc, val) => acc.concat(val))
     );
   }
 
